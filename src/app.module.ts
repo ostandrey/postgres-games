@@ -6,6 +6,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Game } from './game/entity/game.entity';
 import { GenreModule } from './genre/genre.module';
 import { Genre } from './genre/entity/genre.entity';
+import { PlatformModule } from './platform/platform.module';
+import { Platform } from './platform/entity/platform.entity';
 
 @Module({
   imports: [
@@ -16,14 +18,12 @@ import { Genre } from './genre/entity/genre.entity';
       username: 'postgres',
       password: '123',
       database: 'postgres-games',
-      entities: [
-        Game,
-        Genre
-      ],
+      entities: [Game, Genre, Platform],
       synchronize: true,
     }),
     GameModule,
     GenreModule,
+    PlatformModule,
   ],
   controllers: [AppController],
   providers: [AppService],

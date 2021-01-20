@@ -4,7 +4,7 @@ import { GenreDto } from '../dto/genre.dto';
 
 @Controller('genres')
 export class GenreController {
-  constructor( private genreService: GenreService ) {}
+  constructor(private genreService: GenreService) {}
 
   @Post('/')
   create(@Body() genreDto: GenreDto): Promise<GenreDto> {
