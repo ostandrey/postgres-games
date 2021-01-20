@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Platform } from '../entity/platform.entity';
 import { PlatformDto } from '../dto/platform.dto';
+import { PublisherDto } from '../../publisher/dto/publisher.dto';
 
 @Injectable()
 export class PlatformService {
@@ -15,7 +16,22 @@ export class PlatformService {
     return this.platformRepository.save(platform);
   }
 
-  find(): Promise<PlatformDto[]> {
+  getAll(): Promise<PlatformDto[]> {
     return this.platformRepository.find();
+  }
+
+  getOne(id): Promise<PlatformDto> {
+    return this.platformRepository.findOne(id);
+  }
+
+  delete(id) {
+    return this.platformRepository.delete(id);
+  }
+
+  update(id, updatePlatformDto: PlatformDto): Promise<PlatformDto> {
+    return this.platformRepository.save({
+      id: Number(id),
+      ...updatePlatformDto,
+    });
   }
 }
