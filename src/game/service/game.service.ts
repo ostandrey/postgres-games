@@ -15,7 +15,22 @@ export class GameService {
     return this.gameRepository.save(game);
   }
 
-  findAll(): Promise<GameDto[]> {
+  getAll(): Promise<GameDto[]> {
     return this.gameRepository.find();
+  }
+
+  getOne(id): Promise<GameDto> {
+    return this.gameRepository.findOne(id);
+  }
+
+  delete(id) {
+    return this.gameRepository.delete(id);
+  }
+
+  update(id, updateGameDto: GameDto): Promise<GameDto> {
+    return this.gameRepository.save({
+      id: Number(id),
+      ...updateGameDto,
+    });
   }
 }
