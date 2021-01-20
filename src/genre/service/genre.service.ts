@@ -15,7 +15,22 @@ export class GenreService {
     return this.genreRepository.save(genre);
   }
 
-  findAll(): Promise<GenreDto[]> {
+  getAll(): Promise<GenreDto[]> {
     return this.genreRepository.find();
+  }
+
+  getOne(id): Promise<GenreDto> {
+    return this.genreRepository.findOne(id);
+  }
+
+  delete(id) {
+    return this.genreRepository.delete(id);
+  }
+
+  update(id, updateGenreDto: GenreDto): Promise<GenreDto> {
+    return this.genreRepository.save({
+      id: Number(id),
+      ...updateGenreDto,
+    });
   }
 }
