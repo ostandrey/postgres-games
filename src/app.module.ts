@@ -8,6 +8,8 @@ import { GenreModule } from './genre/genre.module';
 import { Genre } from './genre/entity/genre.entity';
 import { PlatformModule } from './platform/platform.module';
 import { Platform } from './platform/entity/platform.entity';
+import { PublisherModule } from './publisher/publisher.module';
+import { Publisher } from './publisher/entity/publisher.entity';
 
 @Module({
   imports: [
@@ -18,12 +20,13 @@ import { Platform } from './platform/entity/platform.entity';
       username: 'postgres',
       password: '123',
       database: 'postgres-games',
-      entities: [Game, Genre, Platform],
+      entities: [Game, Genre, Platform, Publisher],
       synchronize: true,
     }),
     GameModule,
     GenreModule,
     PlatformModule,
+    PublisherModule,
   ],
   controllers: [AppController],
   providers: [AppService],
