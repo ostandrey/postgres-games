@@ -15,7 +15,22 @@ export class PublisherService {
     return this.publisherRepository.save(publisher);
   }
 
-  find(): Promise<PublisherDto[]> {
+  getAll(): Promise<PublisherDto[]> {
     return this.publisherRepository.find();
+  }
+
+  getOne(id): Promise<PublisherDto> {
+    return this.publisherRepository.findOne(id);
+  }
+
+  delete(id) {
+    return this.publisherRepository.delete(id);
+  }
+
+  update(id, updatePublisherDto: PublisherDto): Promise<PublisherDto> {
+    return this.publisherRepository.save({
+      id: Number(id),
+      ...updatePublisherDto,
+    });
   }
 }
