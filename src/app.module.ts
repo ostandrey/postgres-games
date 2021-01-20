@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { GameModule } from './game/game.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Game } from './game/entity/game.entity';
+import { GenreModule } from './genre/genre.module';
+import { Genre } from './genre/entity/genre.entity';
 
 @Module({
   imports: [
@@ -15,11 +17,13 @@ import { Game } from './game/entity/game.entity';
       password: '123',
       database: 'postgres-games',
       entities: [
-        Game
+        Game,
+        Genre
       ],
       synchronize: true,
     }),
     GameModule,
+    GenreModule,
   ],
   controllers: [AppController],
   providers: [AppService],
