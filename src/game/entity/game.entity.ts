@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Genre } from '../../genre/entity/genre.entity';
 
 @Entity()
 export class Game {
@@ -13,4 +14,10 @@ export class Game {
 
   @Column()
   release_date: string;
+
+  @ManyToOne((type) => Genre, (genre) => genre.game, {
+    primary: true,
+    cascade: ['insert'],
+  })
+  genre: Genre;
 }
