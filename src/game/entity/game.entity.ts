@@ -1,5 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Genre } from '../../genre/entity/genre.entity';
+import { Platform } from '../../platform/entity/platform.entity';
+import { Publisher } from '../../publisher/entity/publisher.entity';
 
 @Entity()
 export class Game {
@@ -20,4 +22,16 @@ export class Game {
     cascade: ['insert'],
   })
   genre: Genre;
+
+  @ManyToOne((type) => Platform, (platform) => platform.game, {
+    primary: true,
+    cascade: ['insert'],
+  })
+  platform: Platform;
+
+  @ManyToOne((type) => Publisher, (publisher) => publisher.game, {
+    primary: true,
+    cascade: ['insert'],
+  })
+  publisher: Publisher;
 }

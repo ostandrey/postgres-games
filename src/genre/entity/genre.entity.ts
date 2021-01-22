@@ -1,9 +1,4 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  OneToMany,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Game } from '../../game/entity/game.entity';
 
 @Entity()
@@ -18,5 +13,5 @@ export class Genre {
     primary: true,
     cascade: ['insert'],
   })
-  game: Game;
+  game: Game[];
 }

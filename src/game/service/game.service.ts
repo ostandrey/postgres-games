@@ -12,12 +12,13 @@ export class GameService {
   ) {}
 
   create(game: GameDto): Promise<GameDto> {
+    console.log(game);
     return this.gameRepository.save(game);
   }
 
   getAll(): Promise<GameDto[]> {
     return this.gameRepository.find({
-      relations: ['genre'],
+      relations: ['genre', 'platform', 'publisher'],
     });
   }
 
