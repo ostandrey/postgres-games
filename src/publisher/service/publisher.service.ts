@@ -15,8 +15,15 @@ export class PublisherService {
     return this.publisherRepository.save(publisher);
   }
 
-  getAll(): Promise<PublisherDto[]> {
-    return this.publisherRepository.find();
+  getAll(request, page: number = 1): Promise<PublisherDto[]> {
+    if(request.title) {
+      const searchString = request.title;
+      return this.publisherRepository.find({title : `${searchString}`});
+    }
+    else return this.publisherRepository.find({
+      take: 4,
+      skip: 4 * (page - 1),
+    });
   }
 
   getOne(id): Promise<PublisherDto> {

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { PlatformService } from '../service/platform.service';
 import { PlatformDto } from '../dto/platform.dto';
 
@@ -12,8 +12,8 @@ export class PlatformController {
   }
 
   @Get('/')
-  getAll(): Promise<PlatformDto[]> {
-    return this.platformService.getAll();
+  getAll(@Query() query: string, @Query('page') page: number): Promise<PlatformDto[]> {
+    return this.platformService.getAll(query, page);
   }
 
   @Get('/:id')

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 import { GenreDto } from '../dto/genre.dto';
 import { Genre } from '../entity/genre.entity';
 
@@ -15,8 +15,15 @@ export class GenreService {
     return this.genreRepository.save(genre);
   }
 
-  getAll(): Promise<GenreDto[]> {
-    return this.genreRepository.find();
+  getAll(request, page: number = 1): Promise<GenreDto[]> {
+    if(request.title) {
+      const searchString = request.title;
+      return this.genreRepository.find({title : `${searchString}`});
+    }
+    else return this.genreRepository.find({
+      take: 4,
+      skip: 4 * (page - 1),
+    });
   }
 
   getOne(id): Promise<GenreDto> {

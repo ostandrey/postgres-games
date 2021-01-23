@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { GenreService } from '../service/genre.service';
 import { GenreDto } from '../dto/genre.dto';
 
@@ -11,9 +20,9 @@ export class GenreController {
     return this.genreService.create(genreDto);
   }
 
-  @Get('/')
-  getAll(): Promise<GenreDto[]> {
-    return this.genreService.getAll();
+  @Get()
+  getAll(@Query() query: string, @Query('page') page: number): Promise<GenreDto[]> {
+    return this.genreService.getAll(query, page);
   }
 
   @Get('/:id')

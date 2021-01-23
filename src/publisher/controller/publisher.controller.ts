@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put, Query,
+} from '@nestjs/common';
 import { PublisherService } from '../service/publisher.service';
 import { PublisherDto } from '../dto/publisher.dto';
 
@@ -12,8 +20,8 @@ export class PublisherController {
   }
 
   @Get('/')
-  getAll(): Promise<PublisherDto[]> {
-    return this.publisherService.getAll();
+  getAll(@Query() query: string, @Query('page') page: number): Promise<PublisherDto[]> {
+    return this.publisherService.getAll(page);
   }
 
   @Get('/:id')
