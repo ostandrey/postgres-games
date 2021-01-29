@@ -6,7 +6,7 @@ export class Genre {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: false })
+  @Column()
   title: string;
 
   @OneToMany((type) => Game, (game) => game.genre, {

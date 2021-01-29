@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Publisher } from '../entity/publisher.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { PublisherDto } from '../dto/publisher.dto';
 
 @Injectable()
@@ -15,15 +15,21 @@ export class PublisherService {
     return this.publisherRepository.save(publisher);
   }
 
-  getAll(request, page: number = 1): Promise<PublisherDto[]> {
+  getAll(request, page: number, items: number): Promise<PublisherDto[]> {
     if(request.title) {
       const searchString = request.title;
-      return this.publisherRepository.find({title : `${searchString}`});
+      return this.publisherRepository.find({where: {title : Like(`${searchString}`)}});
     }
-    else return this.publisherRepository.find({
-      take: 4,
-      skip: 4 * (page - 1),
-    });
+    else {
+      if (items == 10 || items == 20 || items == 50) {
+        return this.publisherRepository.find({
+          take: items,
+          skip: page * items,
+        })
+      } else {
+        return this.publisherRepository.find();
+      }
+    }
   }
 
   getOne(id): Promise<PublisherDto> {

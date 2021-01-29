@@ -20,8 +20,8 @@ export class PublisherController {
   }
 
   @Get('/')
-  getAll(@Query() query: string, @Query('page') page: number): Promise<PublisherDto[]> {
-    return this.publisherService.getAll(page);
+  getAll(@Query() query: string, @Query('page') page: number, @Query('items_per_page') items: number,): Promise<PublisherDto[]> {
+    return this.publisherService.getAll(query, page, items);
   }
 
   @Get('/:id')
