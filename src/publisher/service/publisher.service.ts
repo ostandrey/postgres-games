@@ -15,20 +15,35 @@ export class PublisherService {
     return this.publisherRepository.save(publisher);
   }
 
-  getAll(request, page: number, items: number): Promise<PublisherDto[]> {
+  getAll(request, page: number, items: number, sort): Promise<PublisherDto[]> {
     if(request.title) {
       const searchString = request.title;
-      return this.publisherRepository.find({where: {title : Like(`${searchString}`)}});
+      return this.publisherRepository.find({title: Like(`%${searchString}%`)});
     }
-    else {
+    else if(items) {
       if (items == 10 || items == 20 || items == 50) {
         return this.publisherRepository.find({
           take: items,
           skip: page * items,
         })
-      } else {
-        return this.publisherRepository.find();
       }
+    }
+    else {
+      if(sort == 'asc') {
+        return this.publisherRepository.find({
+          order: {
+            title: 1,
+          }
+        });
+      }
+      else if(sort == 'desc') {
+        return this.publisherRepository.find({
+          order: {
+            title: -1,
+          }
+        });
+      }
+      else return this.publisherRepository.find()
     }
   }
 

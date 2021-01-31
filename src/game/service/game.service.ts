@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { GameDto } from '../dto/game.dto';
 import { Game } from '../entity/game.entity';
@@ -12,14 +12,30 @@ export class GameService {
   ) {}
 
   create(game: GameDto): Promise<GameDto> {
-    console.log(game);
     return this.gameRepository.save(game);
   }
 
-  getAll(): Promise<GameDto[]> {
-    return this.gameRepository.find({
-      relations: ['genre', 'platform', 'publisher'],
-    });
+  getAll(request, page: number, items: number): Promise<GameDto[]> {
+    if(request.title) {
+      const searchString = request.title;
+      return this.gameRepository.find({
+        relations: ['genre', 'platform', 'publisher'],
+        where: {title : Like(`${searchString}`)}
+      });
+    }
+    else {
+      if (items == 10 || items == 20 || items == 50) {
+        return this.gameRepository.find({
+          take: items,
+          skip: page * items,
+          relations: ['genre', 'platform', 'publisher'],
+        })
+      } else {
+        return this.gameRepository.find({
+          relations: ['genre', 'platform', 'publisher'],
+        });
+      }
+    }
   }
 
   getOne(id): Promise<GameDto> {

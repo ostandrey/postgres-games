@@ -5,7 +5,7 @@ import {
   Body,
   Param,
   Delete,
-  Put,
+  Put, Query,
 } from '@nestjs/common';
 import { GameService } from '../service/game.service';
 import { GameDto } from '../dto/game.dto';
@@ -20,8 +20,8 @@ export class GameController {
   }
 
   @Get('/')
-  getAll(): Promise<GameDto[]> {
-    return this.gameService.getAll();
+  getAll(@Query() query: string, @Query('page') page: number, @Query('items_per_page') items: number,): Promise<GameDto[]> {
+    return this.gameService.getAll(query, page, items);
   }
 
   @Get('/:id')
