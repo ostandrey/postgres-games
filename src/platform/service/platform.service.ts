@@ -16,15 +16,36 @@ export class PlatformService {
     return this.platformRepository.save(platform);
   }
 
-  getAll(request, page): Promise<PlatformDto[]> {
+  getAll(request, page, items, sort): Promise<PlatformDto[]> {
     if(request.title) {
       const searchString = request.title;
-      return this.platformRepository.find({title : `${searchString}`});
+      return this.platformRepository.find({title: Like(`%${searchString}%`)});
     }
-    else return this.platformRepository.find({
-      take: 4,
-      skip: 4 * (page - 1),
-    });
+    else if(items) {
+      if (items == 10 || items == 20 || items == 50) {
+        return this.platformRepository.find({
+          take: items,
+          skip: page * items,
+        })
+      }
+    }
+    else {
+      if(sort == 'asc') {
+        return this.platformRepository.find({
+          order: {
+            title: 1,
+          }
+        });
+      }
+      else if(sort == 'desc') {
+        return this.platformRepository.find({
+          order: {
+            title: -1,
+          }
+        });
+      }
+    }
+    return this.platformRepository.find()
   }
 
   getOne(id): Promise<PlatformDto> {

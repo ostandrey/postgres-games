@@ -43,8 +43,8 @@ export class PublisherService {
           }
         });
       }
-      else return this.publisherRepository.find()
     }
+    return this.publisherRepository.find()
   }
 
   getOne(id): Promise<PublisherDto> {

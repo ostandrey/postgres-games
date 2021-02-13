@@ -15,15 +15,36 @@ export class GenreService {
     return this.genreRepository.save(genre);
   }
 
-  getAll(request, page: number = 1): Promise<GenreDto[]> {
+  getAll(request, page: number, items: number, sort): Promise<GenreDto[]> {
     if(request.title) {
       const searchString = request.title;
-      return this.genreRepository.find({title : `${searchString}`});
+      return this.genreRepository.find({title: Like(`%${searchString}%`)});
     }
-    else return this.genreRepository.find({
-      take: 4,
-      skip: 4 * (page - 1),
-    });
+    else if(items) {
+      if (items == 10 || items == 20 || items == 50) {
+        return this.genreRepository.find({
+          take: items,
+          skip: page * items,
+        })
+      }
+    }
+    else {
+      if(sort == 'asc') {
+        return this.genreRepository.find({
+          order: {
+            title: 1,
+          }
+        });
+      }
+      else if(sort == 'desc') {
+        return this.genreRepository.find({
+          order: {
+            title: -1,
+          }
+        });
+      }
+    }
+    return this.genreRepository.find()
   }
 
   getOne(id): Promise<GenreDto> {

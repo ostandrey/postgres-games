@@ -21,8 +21,12 @@ export class GenreController {
   }
 
   @Get()
-  getAll(@Query() query: string, @Query('page') page: number): Promise<GenreDto[]> {
-    return this.genreService.getAll(query, page);
+  getAll(@Query() query: string,
+         @Query('page') page: number,
+         @Query('items_per_page') items: number,
+         @Query('sorting') sort: number
+         ): Promise<GenreDto[]> {
+    return this.genreService.getAll(query, page, items, sort);
   }
 
   @Get('/:id')

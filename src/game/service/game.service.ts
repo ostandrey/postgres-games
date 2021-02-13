@@ -15,27 +15,44 @@ export class GameService {
     return this.gameRepository.save(game);
   }
 
-  getAll(request, page: number, items: number): Promise<GameDto[]> {
+  getAll(request, page: number, items: number, sort): Promise<GameDto[]> {
     if(request.title) {
       const searchString = request.title;
       return this.gameRepository.find({
         relations: ['genre', 'platform', 'publisher'],
-        where: {title : Like(`${searchString}`)}
+        where: {title: Like(`%${searchString}%`)}
       });
     }
-    else {
+    else if(items) {
       if (items == 10 || items == 20 || items == 50) {
         return this.gameRepository.find({
           take: items,
           skip: page * items,
           relations: ['genre', 'platform', 'publisher'],
         })
-      } else {
+      }
+    }
+    else {
+      if(sort == 'asc') {
         return this.gameRepository.find({
+          order: {
+            title: 1,
+          },
+          relations: ['genre', 'platform', 'publisher'],
+        });
+      }
+      else if(sort == 'desc') {
+        return this.gameRepository.find({
+          order: {
+            title: -1,
+          },
           relations: ['genre', 'platform', 'publisher'],
         });
       }
     }
+    return this.gameRepository.find({
+      relations: ['genre', 'platform', 'publisher'],
+    });
   }
 
   getOne(id): Promise<GameDto> {
